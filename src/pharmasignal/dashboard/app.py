@@ -9,6 +9,7 @@ from __future__ import annotations
 import io
 import json
 import os
+import threading
 from pathlib import Path
 
 import numpy as np
@@ -16,6 +17,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
+from pharmasignal.dashboard import bootstrap
 from pharmasignal.dashboard.logic import (
     curves,
     drift_table,
@@ -62,9 +64,30 @@ def get_test_scores() -> tuple[np.ndarray, np.ndarray]:
     return np.array([r["signal"] for r in records]), scores
 
 
-def missing_artifacts() -> list[str]:
-    needed = [MODEL_DIR / "metadata.json", DATA_DIR / "test.jsonl"]
-    return [str(path) for path in needed if not path.exists()]
+@st.cache_resource(show_spinner=False)
+def build_lock() -> threading.Lock:
+    """One lock per server process. Only the lock is cached: Streamlit replays elements
+    drawn inside cached functions to later visitors, so progress is drawn outside."""
+    return threading.Lock()
+
+
+def prepare_artifacts() -> None:
+    """Build anything missing (first start on a fresh host); later visitors skip this."""
+
+    def todo():
+        return bootstrap.pending(bootstrap.plan(DATA_DIR, MODEL_DIR, SIMULATED_DIR, MONITORING_DIR))
+
+    if not todo():
+        return
+    with build_lock():
+        steps = todo()  # another visitor may have finished while we waited
+        if not steps:
+            return
+        with st.status("First start: preparing data and model (about 30 seconds)…") as status:
+            for step in steps:
+                status.write(step.name)
+                bootstrap.run_step(step)
+            status.update(label="Ready", state="complete", expanded=False)
 
 
 def gauge(score: float, threshold: float) -> go.Figure:
@@ -111,13 +134,10 @@ st.caption(
     "fields **and** free-text narratives. All data is synthetic; this is not a clinical tool."
 )
 
-absent = missing_artifacts()
-if absent:
-    st.error(
-        "Model or data artifacts not found: "
-        + ", ".join(absent)
-        + ". Run `make artifacts` (see README → Quick start) and reload."
-    )
+try:
+    prepare_artifacts()
+except RuntimeError as exc:
+    st.error(f"Could not prepare the model: {exc}")
     st.stop()
 
 model, metadata = get_model()

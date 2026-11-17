@@ -4,7 +4,7 @@
 
 An educational adverse-event **report triage** pipeline combining structured fields and narrative features.
 
-> **M7 production architecture designed (nothing provisioned); Docker image built and verified locally (2026-11-16).** **208 tests pass** with warnings treated as errors. Synthetic test ROC-AUC **0.7620**; selected-threshold precision **0.4214**, recall **0.7791**, F1 **0.5469**. Drift reports: unchanged batch **0 alerts** (`no_drift_detected`), shifted batch **6 alerts** on exactly the transformed fields (`drift_detected`). No clinical validation, canary or AWS deployment.
+> **M7 production architecture designed (nothing provisioned); Docker image built and verified locally (2026-11-16).** **210 tests pass** with warnings treated as errors. Synthetic test ROC-AUC **0.7620**; selected-threshold precision **0.4214**, recall **0.7791**, F1 **0.5469**. Drift reports: unchanged batch **0 alerts** (`no_drift_detected`), shifted batch **6 alerts** on exactly the transformed fields (`drift_detected`). No clinical validation, canary or AWS deployment.
 
 See [M6 drift methodology, observed results and limitations](M6_DRIFT.md).
 

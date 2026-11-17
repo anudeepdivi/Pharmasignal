@@ -26,7 +26,7 @@ PharmaSignal scores every report for **review priority**, flags the ones above a
 | **REST API** | **FastAPI** service with strict input validation, health and readiness endpoints, and auto-generated OpenAPI docs. |
 | **Experiment tracking** | **MLflow** logs parameters, metrics and the full model bundle, so every run is reproducible. |
 | **Drift monitoring** | Compares new data with the training data using KS tests, total-variation distance and missing-value rates, with pre-registered alert thresholds. |
-| **Engineering quality** | 208 tests (94% coverage, warnings treated as errors), Ruff linting, a locked dependency set, and bit-for-bit reproducible data and reports. |
+| **Engineering quality** | 210 tests (94% coverage, warnings treated as errors), Ruff linting, a locked dependency set, and bit-for-bit reproducible data and reports. |
 
 ## Results
 
@@ -81,7 +81,7 @@ git clone <this-repo-url> pharmasignal && cd pharmasignal
 
 make setup       # install the exact locked dependencies into .venv
 make artifacts   # generate data, train and track the model, build drift reports (~1 min)
-make dashboard   # open http://localhost:8501
+make dashboard   # open http://localhost:8501 (also builds any missing artifacts itself)
 ```
 
 Other commands:
@@ -130,6 +130,16 @@ Every field is required (use `null` for unknown optional values). Unknown fields
 
 `make docker` builds a slim Python 3.12 image (hash-pinned dependencies, non-root user, built-in health check) and serves the API on `http://127.0.0.1:8000`. The image has been built and tested: health check passes and predictions match the local model exactly.
 
+## Deploying the dashboard (Streamlit Community Cloud)
+
+The repo is ready for [Streamlit Community Cloud](https://share.streamlit.io) (free):
+
+1. Sign in with GitHub → **Create app** → **Deploy a public app from GitHub**.
+2. Repository: this repo · Branch: `main` · Main file path: **`deploy/streamlit_app.py`**.
+3. **Advanced settings → Python version: 3.12** → **Deploy**.
+
+`deploy/requirements.txt` (dashboard-only, pinned to the lockfile versions) is picked up because it sits next to the entrypoint. On first start the app generates the synthetic data and trains the model in about 15–30 seconds, reproducing the exact metrics above; later visits load instantly.
+
 ## Project structure
 
 ```text
@@ -139,8 +149,9 @@ src/pharmasignal/
   models/       training, evaluation, threshold selection, MLflow tracking, artifacts
   serving/      FastAPI app and request/response schemas
   monitoring/   drift metrics, simulated batches, drift reports
-  dashboard/    Streamlit app (app.py) and testable helper logic (logic.py)
-tests/          208 tests: unit, integration, live HTTP and headless dashboard
+  dashboard/    Streamlit app (app.py), helper logic (logic.py), first-start builder (bootstrap.py)
+deploy/         Streamlit Community Cloud entrypoint and its pinned requirements
+tests/          210 tests: unit, integration, live HTTP and headless dashboard
 configs/        generator settings and drift-alert thresholds
 docs/           technical write-up, architecture and design notes
 ```

@@ -156,3 +156,35 @@ def test_streamlit_app_runs_end_to_end(workspace, drift_reports, monkeypatch):
     app.slider[0].set_value(0.5).run()
     app.radio[0].set_value("unchanged").run()
     assert not app.exception
+
+
+def test_bootstrap_builds_everything_once(tmp_path):
+    from pharmasignal.dashboard import bootstrap
+
+    dirs = {
+        "data": tmp_path / "data",
+        "model": tmp_path / "models" / "m4",
+        "simulated": tmp_path / "sim",
+        "monitoring": tmp_path / "mon",
+    }
+    steps = bootstrap.plan(**dirs)
+    assert len(bootstrap.pending(steps)) == 6
+    for step in bootstrap.pending(steps):
+        bootstrap.run_step(step)
+    assert bootstrap.pending(steps) == []
+    assert not list(tmp_path.rglob(".*.tmp-*")), "temporary directories must be renamed away"
+    report = json.loads((dirs["monitoring"] / "shifted" / "summary.json").read_text())
+    assert report["overall_status"] == "drift_detected"
+    load_artifact(dirs["model"])  # loads under the same integrity checks as the API
+
+
+def test_bootstrap_failures_are_clean(tmp_path):
+    from pharmasignal.dashboard import bootstrap
+
+    broken = bootstrap.Step("Broken step", tmp_path / "out", "done.json", ("pharmasignal.nope",))
+    with pytest.raises(RuntimeError, match="Broken step failed"):
+        bootstrap.run_step(broken)
+    assert list(tmp_path.iterdir()) == []
+    (tmp_path / "out").mkdir()  # exists but has no marker file: refuse, don't overwrite
+    with pytest.raises(RuntimeError, match="incomplete"):
+        bootstrap.run_step(broken)
