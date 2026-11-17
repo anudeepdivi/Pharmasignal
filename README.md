@@ -1,5 +1,7 @@
 # PharmaSignal
 
+**URL** https://pharmasignal-p7qywf59y9oxvcnpzxmvmf.streamlit.app/
+
 **An end-to-end machine-learning system that ranks adverse-event reports for human review, using both structured fields and free-text narratives.**
 
 It covers the full path from raw records to a working product: data validation → NLP and feature engineering → model training and evaluation → experiment tracking → a REST API → an interactive dashboard → data-drift monitoring, all backed by 200+ automated tests.
