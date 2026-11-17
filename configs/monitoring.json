@@ -1,0 +1,7 @@
+{
+  "min_samples": 30,
+  "ks_alert": 0.15,
+  "effect_alert": 0.5,
+  "tv_alert": 0.2,
+  "missingness_alert": 0.15
+}

@@ -1,0 +1,15 @@
+**
+!Dockerfile
+!.dockerignore
+!docker/
+!docker/requirements.txt
+!src/
+!src/**
+src/**/__pycache__/
+src/**/*.pyc
+!artifacts/
+!artifacts/models/
+!artifacts/models/m4/
+!artifacts/models/m4/pipeline.joblib
+!artifacts/models/m4/report.json
+!artifacts/models/m4/metadata.json

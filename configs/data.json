@@ -1,0 +1,32 @@
+{
+  "seed": 42,
+  "n_train": 1800,
+  "n_validation": 600,
+  "n_test": 600,
+  "coefficients": {
+    "g0": -1.6,
+    "g1_dose": 0.9,
+    "g2_exposure": 0.7,
+    "g3_age": 0.5,
+    "g4_egfr": 0.8,
+    "g5_meds": 0.5,
+    "g6_treatment_b": 0.25,
+    "b0": -2.6,
+    "b1_event": 2.6,
+    "b2_dose": 0.6,
+    "b3_exposure": 0.4,
+    "b4_egfr": 0.5,
+    "b5_meds": 0.3
+  },
+  "p_underreport": 0.15,
+  "p_false_alarm": 0.25,
+  "p_benign_mention": 0.4,
+  "missingness": {
+    "age": 0.05,
+    "sex": 0.04,
+    "dose_mg": 0.06,
+    "exposure_days": 0.05,
+    "baseline_egfr": 0.12,
+    "concomitant_med_count": 0.08
+  }
+}

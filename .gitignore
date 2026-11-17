@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Experiment tracking / model artifacts (reproducible, not versioned)
+mlruns/
+artifacts/
+*.joblib
+*.pkl
+
+# Environment
+.env
+.env.*
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+.Rhistory
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Local tooling
+.claude/
+
+# Private notes (kept locally, not published)
+INTERVIEW_NOTES.md
+FINAL_PROJECT_AUDIT.md
