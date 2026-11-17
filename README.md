@@ -20,13 +20,13 @@ PharmaSignal scores every report for **review priority**, flags the ones above a
 
 | | |
 |---|---|
-| 🔎 **Interactive dashboard** | Score a single report and see what drove the score, upload a CSV to score reports in bulk and download the results, explore model performance with a live threshold slider, and check incoming data for drift. Built with **Streamlit + Plotly**. |
-| 🧠 **NLP + tabular ML** | **spaCy** tokenisation, negation-aware rule features (*"denies fever"* ≠ *"fever"*), and TF-IDF n-grams, fused with structured fields in one **scikit-learn** pipeline. 1,321 features in total. |
-| 📏 **Rigorous evaluation** | Leakage-safe splits, model and threshold chosen on validation data only, and the test set scored exactly once. Compares structured-only, text-only and combined models. |
-| 🚀 **REST API** | **FastAPI** service with strict input validation, health and readiness endpoints, and auto-generated OpenAPI docs. |
-| 📊 **Experiment tracking** | **MLflow** logs parameters, metrics and the full model bundle, so every run is reproducible. |
-| 🌊 **Drift monitoring** | Compares new data with the training data using KS tests, total-variation distance and missing-value rates, with pre-registered alert thresholds. |
-| ✅ **Engineering quality** | 208 tests (94% coverage, warnings treated as errors), Ruff linting, a locked dependency set, and bit-for-bit reproducible data and reports. |
+| **Interactive dashboard** | Score a single report and see what drove the score, upload a CSV to score reports in bulk and download the results, explore model performance with a live threshold slider, and check incoming data for drift. Built with **Streamlit + Plotly**. |
+| **NLP + tabular ML** | **spaCy** tokenisation, negation-aware rule features (*"denies fever"* ≠ *"fever"*), and TF-IDF n-grams, fused with structured fields in one **scikit-learn** pipeline. 1,321 features in total. |
+| **Rigorous evaluation** | Leakage-safe splits, model and threshold chosen on validation data only, and the test set scored exactly once. Compares structured-only, text-only and combined models. |
+| **REST API** | **FastAPI** service with strict input validation, health and readiness endpoints, and auto-generated OpenAPI docs. |
+| **Experiment tracking** | **MLflow** logs parameters, metrics and the full model bundle, so every run is reproducible. |
+| **Drift monitoring** | Compares new data with the training data using KS tests, total-variation distance and missing-value rates, with pre-registered alert thresholds. |
+| **Engineering quality** | 208 tests (94% coverage, warnings treated as errors), Ruff linting, a locked dependency set, and bit-for-bit reproducible data and reports. |
 
 ## Results
 
